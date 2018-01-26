@@ -27,28 +27,21 @@ const bodyOptions = {
 };
 
 
-const arg = yargs
-
-.command('add','Add a new note',{
-
+const argv = yargs
+  .command('add', 'Add a new note', {
     title: titleOptions,
     body: bodyOptions
-    
-})
-.command('list','List of all notes')
-.command('read','Read a note',{
-
+  })
+  .command('list', 'List all notes')
+  .command('read', 'Read a note', {
+    title: titleOptions,
+  })
+  .command('remove', 'Remove a note', {
     title: titleOptions
-
-})
-.command('remove','Remove a note'{
-
-    title: titleOptions
-})
-
-.help()
-.argv;
-
+  })
+  .help()
+  .argv;
+  
 var command = argv._[0];
 
 //console.log('\nYargs:', arg);
@@ -59,7 +52,7 @@ var command = argv._[0];
 if (command === 'add') {
 
     //console.log('Adding new note');
-    var noteAdded = notes.addNote(arg.title, arg.body);
+    var noteAdded = notes.addNote(argv.title, argv.body);
 
     if(noteAdded){
         console.log("\nSuccessfully added new note in database!");
@@ -78,9 +71,9 @@ if (command === 'add') {
 } else if (command === 'read') {
 
     //console.log('Reading note');
-    var note = notes.getNote(arg.title);
+    var note = notes.getNote(argv.title);
     if(note){
-        console.log("\nNote with title: "+ arg.title + " found!");
+        console.log("\nNote with title: "+ argv.title + " found!");
         notes.logNote(note);
     }
     else{
@@ -90,7 +83,7 @@ if (command === 'add') {
 } else if (command === 'remove') {
     
     //console.log('Removing note');
-    var noteRemoved = notes.removeNote(arg.title);
+    var noteRemoved = notes.removeNote(argv.title);
     var message = noteRemoved ? "Note Removed!" : "Note not found!";
     console.log(message);
 
